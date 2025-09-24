@@ -81,7 +81,7 @@ if __name__ == "__main__":
         print("\n" + "-" * 25 + "\nBeginning Policy Iteration\n" + "-" * 25)
 
         start_time = time.time()
-        V_pi, p_pi = policy_iteration(env.unwrapped.P, env.unwrapped.nS, env.unwrapped.nA, gamma=gamma, tol=convergence_tolerance)
+        V_pi, p_pi = policy_iteration(env.unwrapped.P, env.unwrapped.nS, env.unwrapped.nA, gamma=gamma, tol=convergence_tolerance, deterministic=deterministic)
         time_pi = time.time() - start_time
         print(f"Policy iteration completed after {time_pi:.6f} seconds. \n")
         print("V* values (Policy Iteration):")
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         print("\n" + "-" * 25 + "\nBeginning Value Iteration\n" + "-" * 25)
 
         start_time = time.time()
-        V_vi, p_vi = value_iteration(env.unwrapped.P, env.unwrapped.nS, env.unwrapped.nA, gamma=gamma, tol=convergence_tolerance)
+        V_vi, p_vi = value_iteration(env.unwrapped.P, env.unwrapped.nS, env.unwrapped.nA, gamma=gamma, tol=convergence_tolerance, deterministic=deterministic)
         time_vi = time.time() - start_time
         print(f"Value iteration completed after {time_vi:.6f} seconds. \n")
         print("V* values (Value Iteration):")
