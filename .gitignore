@@ -1,0 +1,42 @@
+# Python cache files
+**/__pycache__/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Development container folders
+**/devcontainer/
+devcontainer/
+**/.devcontainer/
+.devcontainer/
+
+# LaTeX auxiliary files (keep .tex and .pdf)
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.brf
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.ist
+*.acn
+*.acr
+*.alg
+*.glg
+*.xdy
