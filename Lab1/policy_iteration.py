@@ -2,27 +2,43 @@ import numpy as np
 
 
 def policy_evaluation(P, nS, nA, policy, gamma=0.9, tol=1e-3):
-    """
-    Evaluate the value function from a given policy.
+	"""
+	Evaluate the value function from a given policy.
 
-    Args:
-            P, nS, nA, gamma: defined in the main file
-            policy (np.array[nS]): The policy to evaluate. Maps states to actions.
-            tol (float): Terminate policy evaluation when
-            max |value_function(s) - prev_value_function(s)| < tol
+	Args:
+			P, nS, nA, gamma: defined in the main file
+			policy (np.array[nS]): The policy to evaluate. Maps states to actions.
+			tol (float): Terminate policy evaluation when
+			max |value_function(s) - prev_value_function(s)| < tol
 
-    Returns:
-            value_function (np.ndarray[nS]): The value function of the given policy,
-            where value_function[s] is the value of state s.
-    """
+	Returns:
+			value_function (np.ndarray[nS]): The value function of the given policy,
+			where value_function[s] is the value of state s.
+			"""
 
-    V_s = np.zeros(nS)
+	V_s = np.zeros(nS)
 
-    ### START CODE HERE ###
+	### START CODE HERE ###
+	diff = float("inf")
+	
+	while diff >= tol:
+		diff = 0.0
+  
+		for state in range(nS):
+			v = V_s[state]
+			new_v = 0
 
-    ### END CODE HERE ###
+			for probability, nextstate, reward, _ in P[state][policy[state]]:
+				new_v += probability*(reward + gamma*V_s[nextstate])
+     
+			V_s[state] = new_v
+   
+			state_diff = np.abs(v - V_s[state])
+			diff = max(diff, state_diff)
 
-    return V_s
+	### END CODE HERE ###
+
+	return V_s
 
 
 def policy_improvement(P, nS, nA, value_from_policy, policy, gamma=0.9):
@@ -43,8 +59,25 @@ def policy_improvement(P, nS, nA, value_from_policy, policy, gamma=0.9):
     new_policy = np.zeros(nS, dtype="int")
 
     ### START CODE HERE ###
-
-    ### END CODE HERE ###
+    
+    for state in range(nS):
+        new_action = 0
+        max_v = -float("inf")
+        
+        for action in range(nA):
+            new_v = 0
+            
+            for probability, next_state, reward, _ in P[state][action]:
+                new_v += probability*(reward + gamma*value_from_policy[next_state])
+                
+            if new_v > max_v:
+                max_v = new_v
+                new_action = action
+                
+        new_policy[state] = new_action
+        
+    ### END CODE HERE ###        
+    
     return new_policy
 
 
@@ -68,6 +101,18 @@ def policy_iteration(P, nS, nA, gamma=0.9, tol=1e-3):
     policy = np.zeros(nS, dtype=int)
 
     ### START CODE HERE ###
+    
+    while True:
+        new_V_s = policy_evaluation(P, nS, nA, policy, gamma, tol)
+        
+        if np.allclose(new_V_s, V_s, atol = 1e-3):
+            break
+        
+        V_s = new_V_s.copy()
+        
+        policy = policy_improvement(P, nS, nA, V_s, policy, gamma)
+        
+    V_s = new_V_s.copy()
 
     ### END CODE HERE ###
     return V_s, policy
