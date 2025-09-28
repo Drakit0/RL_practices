@@ -182,54 +182,54 @@ garantizan que la política óptima siga el camino deseado.
 
 \subsection*{Cálculos detallados}
 
-\textbf{Estado $s_{13}$:} \\
+\paragraph{Estado $s_{13}$:}
 \[
-a_1: r_s + 0.9(r_s + 0.9 \cdot 5) = 1.9r_s + 4.05, 
-\quad a_2: 5
+a_1 : r_s + 0.9(r_s + 0.9 \cdot 5) = 1.9r_s + 4.05,
+\qquad
+a_2 : 5
 \]
 
 Para que la política óptima elija el camino al objetivo:
 \[
-1.9r_s + 4.05 < 5 \;\;\Rightarrow\;\; r_s < \frac{0.95}{1.9} \approx 0.5
+1.9r_s + 4.05 < 5 \;\;\Rightarrow\;\; r_s < \frac{0.95}{1.9} \approx 0.5.
 \]
 
-\vspace{0.3cm}
-
-\textbf{Estado $s_{17}$:} \\
+\paragraph{Estado $s_{17}$:}
 \[
-a_1: r_s + 0.9 \cdot 5 = r_s + 4.5, 
-\quad a_2: r_s + 0.9 \cdot 5 = r_s + 4.5
+a_1 : r_s + 0.9 \cdot 5 = r_s + 4.5,
+\qquad
+a_2 : r_s + 0.9 \cdot 5 = r_s + 4.5
 \]
 
-Ambas acciones dan el mismo valor, luego existen múltiples políticas óptimas. 
+Ambas acciones dan el mismo valor, luego \emph{existen múltiples políticas óptimas}.
 No se impone restricción sobre $r_s$.
 
-\vspace{0.3cm}
-
-\textbf{Estado $s_{11}$:} \\
+\paragraph{Estado $s_{11}$:}
 \[
-a_1: -5, 
-\quad a_2: r_s + 0.9 \cdot 5 = r_s + 4.5
+a_1 : -5,
+\qquad
+a_2 : r_s + 0.9 \cdot 5 = r_s + 4.5
 \]
 
 Para que la política no prefiera caer en el obstáculo:
 \[
-r_s + 4.5 > -5 \;\;\Rightarrow\;\; r_s > -9.5
+r_s + 4.5 > -5 \;\;\Rightarrow\;\; r_s > -9.5.
 \]
 
 \subsection*{Conclusión}
 
 Combinando las condiciones:
-\begin{equation}
+\[
 -9.5 < r_s < 0.5
-\end{equation}
+\]
 
 \begin{itemize}
-    \item Si $r_s \in \{-3,-1\}$, el agente sigue siempre el camino más corto.
-    \item En $s_{17}$ hay políticas óptimas múltiples, pues ambas acciones son equivalentes.
-    \item Si $r_s$ es demasiado positivo ($> 0.5$), el agente podría alargar el camino sin perder valor.
-    \item Si $r_s$ es demasiado negativo ($< -9.5$), el agente preferiría caer en estados terminales no deseados.
+  \item Si $r_s \in \{-3,-1\}$, el agente sigue siempre el camino más corto.
+  \item En $s_{17}$ hay políticas óptimas múltiples, pues ambas acciones son equivalentes.
+  \item Si $r_s$ es demasiado positivo ($>0.5$), el agente podría alargar el camino sin perder valor.
+  \item Si $r_s$ es demasiado negativo ($<-9.5$), el agente preferiría caer en estados terminales no deseados.
 \end{itemize}
+
 
 \section{Policy Iteration}
 
