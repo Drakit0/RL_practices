@@ -172,10 +172,161 @@
 
 \section{Introducción}
 
+\section{Trabajo previo}
 
-\vspace{1cm}
+En el trabajo previo nos planteamos determinar, en función de $r_s$, las ecuaciones de Bellman 
+para los estados $s_{13}$, $s_{17}$ y $s_{11}$ bajo una política estocástica equiprobable 
+(en cada estado, cada acción tiene probabilidad 0.5). 
+El objetivo era analizar cómo varía el valor de los estados y qué condiciones sobre $r_s$ 
+garantizan que la política óptima siga el camino deseado.
 
+\subsection*{Cálculos detallados}
 
+\textbf{Estado $s_{13}$:} \\
+\[
+a_1: r_s + 0.9(r_s + 0.9 \cdot 5) = 1.9r_s + 4.05, 
+\quad a_2: 5
+\]
+
+Para que la política óptima elija el camino al objetivo:
+\[
+1.9r_s + 4.05 < 5 \;\;\Rightarrow\;\; r_s < \frac{0.95}{1.9} \approx 0.5
+\]
+
+\vspace{0.3cm}
+
+\textbf{Estado $s_{17}$:} \\
+\[
+a_1: r_s + 0.9 \cdot 5 = r_s + 4.5, 
+\quad a_2: r_s + 0.9 \cdot 5 = r_s + 4.5
+\]
+
+Ambas acciones dan el mismo valor, luego existen múltiples políticas óptimas. 
+No se impone restricción sobre $r_s$.
+
+\vspace{0.3cm}
+
+\textbf{Estado $s_{11}$:} \\
+\[
+a_1: -5, 
+\quad a_2: r_s + 0.9 \cdot 5 = r_s + 4.5
+\]
+
+Para que la política no prefiera caer en el obstáculo:
+\[
+r_s + 4.5 > -5 \;\;\Rightarrow\;\; r_s > -9.5
+\]
+
+\subsection*{Conclusión}
+
+Combinando las condiciones:
+\begin{equation}
+-9.5 < r_s < 0.5
+\end{equation}
+
+\begin{itemize}
+    \item Si $r_s \in \{-3,-1\}$, el agente sigue siempre el camino más corto.
+    \item En $s_{17}$ hay políticas óptimas múltiples, pues ambas acciones son equivalentes.
+    \item Si $r_s$ es demasiado positivo ($> 0.5$), el agente podría alargar el camino sin perder valor.
+    \item Si $r_s$ es demasiado negativo ($< -9.5$), el agente preferiría caer en estados terminales no deseados.
+\end{itemize}
+
+\section{Policy Iteration}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../fonts/policy_gap_deterministic.png} 
+      \caption{Evolución del \textit{suboptimality gap} (determinista).}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../fonts/policy_gap_stochastic.png}
+      \caption{Evolución del \textit{suboptimality gap} (estocástico).}
+  \end{minipage}
+\end{figure}
+
+En estas gráficas se ve que el \emph{suboptimality gap} cae de forma constante hasta llegar a 0 en la tercera iteración y se mantiene en la cuarta.  
+\begin{itemize}
+    \item En el caso determinista, el gap pasa de $\sim 8.5$ a $6.0$, y finalmente a $0$.  
+    \item En el caso estocástico, el gap baja de $\sim 5.1$ a $0.8$ y después también converge a $0$.  
+\end{itemize}
+En resumen, la política óptima se alcanza muy rápido (3 iteraciones).
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../fonts/v_s_policy_deterministic.png} 
+      \caption{Actualización de $V_s$ por estado en PI (determinista).}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../fonts/v_s_policy_stochastic.png}
+      \caption{Actualización de $V_s$ por estado en PI (estocástico).}
+  \end{minipage}
+\end{figure}
+
+Se puede observar cómo cambian los valores por estado. En el determinista, los picos de diferencia aparecen sobre todo cerca de la meta y de los obstáculos, y van desapareciendo hasta quedar planos. En el estocástico, los cambios se reparten más suavemente y alcanzan zonas más alejadas, lo cual refleja el efecto de la incertidumbre en las transiciones.
+
+\paragraph{Sensibilidad a $\gamma$ y $\theta$.}
+\begin{itemize}
+    \item Con $\gamma$ más alto, los caminos largos pesan más, pero como cada paso tiene coste negativo, la política sigue prefiriendo los caminos cortos. Sí que se nota que la convergencia es más lenta.  
+    \item Con una tolerancia $\theta$ más estricta, es decir, un valor de $\theta$ menor, se necesitan más iteraciones internas de evaluación antes de mejorar la política. El número de iteraciones externas se mantiene, pero tarda un poco más.  
+\end{itemize}
+
+\section{Value Iteration}
+
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../fonts/v_s_value_deterministic.png} 
+      \caption{Actualización de $V_s$ en VI (determinista).}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[t]{0.45\textwidth}
+      \centering
+      \includegraphics[width=\textwidth]{../fonts/v_s_value_stochastic.png}
+      \caption{Actualización de $V_s$ en VI (estocástico).}
+  \end{minipage}
+\end{figure}
+
+Value Iteration actualiza directamente los valores con la ecuación de optimalidad.  
+Los gráficos muestran picos en estados cercanos a la meta y a los obstáculos, mientras que en el resto los cambios son casi nulos porque ya están estabilizados.
+
+\paragraph{Sensibilidad a $\gamma$ y $\theta$.}
+\begin{itemize}
+    \item \textbf{Parámetro $\gamma$:}
+    \begin{itemize}
+        \item Si aumentamos $\gamma$ (más cerca de 1), las recompensas futuras pesan más.
+        \item Esto no cambia la política óptima en este entorno (sigue siendo el camino corto, porque cada paso tiene un coste negativo), pero sí ralentiza la convergencia: los valores de los estados dependen de horizontes más largos y los cambios en $V_s$ se propagan más despacio.
+        \item Con $\gamma$ más bajo, la convergencia es más rápida, pero la política puede ser menos sensible a recompensas lejanas.
+    \end{itemize}
+    \item \textbf{Tolerancia $\theta$:}
+    \begin{itemize}
+        \item Igual que en PI, una $\theta$ más estricta (más pequeña) implica que VI seguirá iterando más tiempo hasta que los cambios en $V_s$ sean muy pequeños.
+        \item Esto aumenta el número de \emph{iteraciones externas} necesarias.
+        \item La política final no cambia (sigue siendo la óptima), aunque se gana precisión en los valores.
+    \end{itemize}
+\end{itemize}
+
+Cuando el agente aprende con Policy Iteration y con Value Iteration, en ambos casos llega a la misma solución: la política óptima.
+Las políticas obtenidas son equivalentes, salvo posibles diferencias menores en cómo se resuelven empates, pero su desempeño es idéntico.
+Policy Iteration suele necesitar pocas iteraciones externas (3 en este entorno) para estabilizar la política.
+Value Iteration requiere más iteraciones globales, aunque cada una es más ligera en cómputo.
+En la práctica, los tiempos de convergencia de ambos métodos resultan similares para este problema.
+
+\section{MDP Estocástico}
+
+Con $p_\text{éxito}=0.8$ y $p_\text{fallo}=0.2$ en el entorno estocástico, el proceso de aprendizaje del agente sigue siendo estable: el suboptimality gap también cae a 0 en tres iteraciones, igual que en el caso determinista.
+La diferencia es que la primera iteración reduce gran parte del error (de $\sim 5.1$ a $0.8$), debido a que las transiciones probabilísticas suavizan los retornos.
+Los cambios en los valores $V_s$ se reparten de forma más uniforme por el espacio de estados, alcanzando zonas más alejadas que en el entorno determinista.
+Aun así, la política óptima resultante vuelve a ser el camino corto, ya que cada paso tiene un coste negativo.
+En resumen, la incertidumbre no cambia la solución final, pero hace que el proceso de aprendizaje sea más progresivo y con transiciones de valor más suaves que en el entorno determinista.
 \end{document}
 
 
