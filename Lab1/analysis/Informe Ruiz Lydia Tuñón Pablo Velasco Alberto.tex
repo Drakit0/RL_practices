@@ -172,12 +172,25 @@
 
 \section{Introducción}
 
+En este laboratorio se exploran las bases del aprendizaje por refuerzo a través de las ecuaciones de Bellman y los algoritmos de programación dinámica. 
+Las ecuaciones de Bellman son la base teórica para hallar políticas óptimas en procesos de decisión de Markov (MDPs), ya que expresan el valor de un estado 
+como la suma de la recompensa inmediata así como el valor esperado del estado siguiente.
+
+Se implementan y comparan dos algoritmos clásicos: Policy Iteration, que alterna evaluaciones de política y mejora hasta converger a la política óptima frente a
+Value Iteration, que actualiza directamente los valores de estado usando la ecuación de optimalidad de Bellman. Además, se analiza el comportamiento de dichos 
+algoritmos tanto en entornos deterministas como estocásticos, evaluando su sensibilidad a parámetros clave como el factor de descuento $\gamma$ y la 
+tolerancia de convergencia $\theta$.
+
+El trabajo se estructura en cuatro secciones: primero se derivan analíticamente las ecuaciones de Bellman para estados específicos bajo una política estocástica, 
+posteriormente se implementa Policy Iteration y Value Iteration analizando su convergencia para finalmente comparar el comportamiento en entornos deterministas 
+versus estocásticos.
+
 \section{Trabajo previo}
 
-En el trabajo previo nos planteamos determinar, en función de $r_s$, las ecuaciones de Bellman 
+En el trabajo previo se quiere determinar, en función de $r_s$, las ecuaciones de Bellman 
 para los estados $s_{13}$, $s_{17}$ y $s_{11}$ bajo una política estocástica equiprobable 
 (en cada estado, cada acción tiene probabilidad 0.5). 
-El objetivo era analizar cómo varía el valor de los estados y qué condiciones sobre $r_s$ 
+El objetivo consiste en analizar cómo varía el valor de los estados y qué condiciones sobre $r_s$ 
 garantizan que la política óptima siga el camino deseado.
 
 \subsection*{Cálculos detallados}
@@ -201,7 +214,7 @@ a_1 : r_s + 0.9 \cdot 5 = r_s + 4.5,
 a_2 : r_s + 0.9 \cdot 5 = r_s + 4.5
 \]
 
-Ambas acciones dan el mismo valor, luego \emph{existen múltiples políticas óptimas}.
+Ambas acciones proporcionan el mismo valor, por tanto \emph{existen múltiples políticas óptimas}.
 No se impone restricción sobre $r_s$.
 
 \paragraph{Estado $s_{11}$:}
@@ -248,11 +261,12 @@ Combinando las condiciones:
   \end{minipage}
 \end{figure}
 
-En estas gráficas se ve que el \emph{suboptimality gap} cae de forma constante hasta llegar a 0 en la tercera iteración y se mantiene en la cuarta.  
+En estas gráficas se puede observar que el \emph{suboptimality gap} cae de forma constante hasta llegar a 0 en la tercera iteración y se mantiene en la cuarta.  
 \begin{itemize}
     \item En el caso determinista, el gap pasa de $\sim 8.5$ a $6.0$, y finalmente a $0$.  
     \item En el caso estocástico, el gap baja de $\sim 5.1$ a $0.8$ y después también converge a $0$.  
 \end{itemize}
+
 En resumen, la política óptima se alcanza muy rápido (3 iteraciones).
 
 \begin{figure}[H]
@@ -270,12 +284,16 @@ En resumen, la política óptima se alcanza muy rápido (3 iteraciones).
   \end{minipage}
 \end{figure}
 
-Se puede observar cómo cambian los valores por estado. En el determinista, los picos de diferencia aparecen sobre todo cerca de la meta y de los obstáculos, y van desapareciendo hasta quedar planos. En el estocástico, los cambios se reparten más suavemente y alcanzan zonas más alejadas, lo cual refleja el efecto de la incertidumbre en las transiciones.
+Se puede observar cómo cambian los valores por estado. En el determinista, los picos de diferencia aparecen sobre todo cerca de la meta y de los obstáculos, y 
+van desapareciendo hasta quedar planos. En el estocástico, los cambios se reparten más suavemente y alcanzan zonas más alejadas, lo cual refleja el efecto de la 
+incertidumbre en las transiciones.
 
 \paragraph{Sensibilidad a $\gamma$ y $\theta$.}
 \begin{itemize}
-    \item Con $\gamma$ más alto, los caminos largos pesan más, pero como cada paso tiene coste negativo, la política sigue prefiriendo los caminos cortos. Sí que se nota que la convergencia es más lenta.  
-    \item Con una tolerancia $\theta$ más estricta, es decir, un valor de $\theta$ menor, se necesitan más iteraciones internas de evaluación antes de mejorar la política. El número de iteraciones externas se mantiene, pero tarda un poco más.  
+    \item Con $\gamma$ más alto, los caminos largos pesan más, pero como cada paso tiene coste negativo, la política sigue prefiriendo los caminos cortos. Sí que 
+    se nota que la convergencia es más lenta.  
+    \item Con una tolerancia $\theta$ más estricta, es decir, un valor de $\theta$ menor, se necesitan más iteraciones internas de evaluación antes de mejorar 
+    la política. El número de iteraciones externas se mantiene, pero tarda un poco más.  
 \end{itemize}
 
 \section{Value Iteration}
@@ -303,7 +321,8 @@ Los gráficos muestran picos en estados cercanos a la meta y a los obstáculos, 
     \item \textbf{Parámetro $\gamma$:}
     \begin{itemize}
         \item Si aumentamos $\gamma$ (más cerca de 1), las recompensas futuras pesan más.
-        \item Esto no cambia la política óptima en este entorno (sigue siendo el camino corto, porque cada paso tiene un coste negativo), pero sí ralentiza la convergencia: los valores de los estados dependen de horizontes más largos y los cambios en $V_s$ se propagan más despacio.
+        \item Esto no cambia la política óptima en este entorno (sigue siendo el camino corto, porque cada paso tiene un coste negativo), pero sí ralentiza la 
+        convergencia: los valores de los estados dependen de horizontes más largos y los cambios en $V_s$ se propagan más despacio.
         \item Con $\gamma$ más bajo, la convergencia es más rápida, pero la política puede ser menos sensible a recompensas lejanas.
     \end{itemize}
     \item \textbf{Tolerancia $\theta$:}
@@ -326,7 +345,7 @@ Con $p_\text{éxito}=0.8$ y $p_\text{fallo}=0.2$ en el entorno estocástico, el 
 La diferencia es que la primera iteración reduce gran parte del error (de $\sim 5.1$ a $0.8$), debido a que las transiciones probabilísticas suavizan los retornos.
 Los cambios en los valores $V_s$ se reparten de forma más uniforme por el espacio de estados, alcanzando zonas más alejadas que en el entorno determinista.
 Aun así, la política óptima resultante vuelve a ser el camino corto, ya que cada paso tiene un coste negativo.
-En resumen, la incertidumbre no cambia la solución final, pero hace que el proceso de aprendizaje sea más progresivo y con transiciones de valor más suaves que en el entorno determinista.
+En resumen, la incertidumbre no modifica la solución final, pero hace que el proceso de aprendizaje sea más progresivo y con transiciones de valor más suaves que en el entorno determinista.
 \end{document}
 
 
