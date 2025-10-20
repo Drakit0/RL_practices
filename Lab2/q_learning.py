@@ -17,7 +17,7 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon, render=False):
     Q_13_D = {}
     Q_22_U = {}
     Q_22_D = {}
-    
+        
     for eps in range(num_episodes):
         s, _ = env.reset()
         
@@ -47,10 +47,15 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon, render=False):
                 else:
                     a = np.argmax(Q[s, :])
             
-            rewards += 1
+            rewards += r
             steps += 1
+        
+        if steps in steps_episodes.keys():
+            steps_episodes[steps] += 1
             
-        steps_episodes[eps + 1] = steps
+        else:
+            steps_episodes[steps] = 1
+            
         rewards_episodes[eps + 1] = rewards
         Q_13_U[eps + 1] = Q[13, 0]
         Q_13_D[eps + 1] = Q[13, 1]
@@ -59,14 +64,14 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon, render=False):
         
     plt.figure(figsize=(12, 6))
     plt.bar(steps_episodes.keys(), steps_episodes.values())
-    plt.xlabel('Episode')
-    plt.ylabel('Steps')
+    plt.xlabel('Steps')
+    plt.ylabel('Episodes')
     plt.title('Q-learning steps per episode')
     plt.savefig('fonts/q_learning_steps_eps.png')
     
     plt.figure(figsize=(12, 6))
     plt.plot(rewards_episodes.keys(), rewards_episodes.values())
-    plt.xlabel('Episode')
+    plt.xlabel('Episodes')
     plt.ylabel('Sum of rewards during episode')
     plt.title('Q-learning rewards per episode')
     plt.savefig('fonts/q_learning_rewards_eps.png')

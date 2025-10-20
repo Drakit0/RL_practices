@@ -49,8 +49,13 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
             
             rewards += r
             steps += 1
+        
+        if steps in steps_episodes.keys():
+            steps_episodes[steps] += 1
             
-        steps_episodes[eps + 1] = steps
+        else:
+            steps_episodes[steps] = 1
+        
         rewards_episodes[eps + 1] = rewards
         Q_13_U[eps + 1] = Q[13, 0]
         Q_13_D[eps + 1] = Q[13, 1]
@@ -59,16 +64,16 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
         
     plt.figure(figsize=(12, 6))
     plt.bar(steps_episodes.keys(), steps_episodes.values())
-    plt.xlabel('Episode')
-    plt.ylabel('Steps')
-    plt.title('Sarsa steps per episode')
+    plt.xlabel('Steps')
+    plt.ylabel('Episodes')
+    plt.title('Q-learning steps per episode')
     plt.savefig('fonts/sarsa_steps_eps.png')
     
     plt.figure(figsize=(12, 6))
     plt.plot(rewards_episodes.keys(), rewards_episodes.values())
-    plt.xlabel('Episode')
+    plt.xlabel('Episodes')
     plt.ylabel('Sum of rewards during episode')
-    plt.title('Sarsa rewards per episode')
+    plt.title('Q-learning rewards per episode')
     plt.savefig('fonts/sarsa_rewards_eps.png')
     
     plt.figure(figsize=(12, 8))
@@ -78,11 +83,11 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
     plt.plot(Q_22_D.keys(), Q_22_D.values(), label='Q(22, DOWN_RIGHT)')
     plt.xlabel('Episode')
     plt.ylabel('Q-value')
-    plt.title('Sarsa Q-value convergence')
+    plt.title('Q-learning Q-value convergence')
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.savefig('fonts/sarsa_q_convergence.png')
-
+    
     # END YOUR CODE HERE
 
     return Q
