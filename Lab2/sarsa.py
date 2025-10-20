@@ -1,5 +1,6 @@
 import numpy as np
 import gymnasium as gym
+import matplotlib.pyplot as plt
 
 
 def sarsa(env, num_episodes, alpha, gamma, epsilon):
@@ -10,8 +11,18 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
     nA = env.action_space.n
     Q = np.zeros((nS, nA))
     
-    for _ in range(num_episodes):
+    steps_episodes = {}
+    rewards_episodes = {}
+    Q_13_U = {}
+    Q_13_D = {}
+    Q_22_U = {}
+    Q_22_D = {}
+    
+    for eps in range(num_episodes):
         s, _ = env.reset()
+        
+        steps = 0
+        rewards = 0
         
         if np.random.random() < epsilon:
             a = np.random.choice(nA)
@@ -31,10 +42,46 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
             else:
                 a_p = np.argmax(Q[s_p, :])
             
-            Q[s, a] = Q[s, a] + alpha * (r + gamma * (Q[s_p, a_p] - Q[s, a]))
+            Q[s, a] = Q[s, a] + alpha * (r + gamma * Q[s_p, a_p] - Q[s, a])
             
             s = s_p
-            a = a_p            
+            a = a_p
+            
+            rewards += r
+            steps += 1
+            
+        steps_episodes[eps + 1] = steps
+        rewards_episodes[eps + 1] = rewards
+        Q_13_U[eps + 1] = Q[13, 0]
+        Q_13_D[eps + 1] = Q[13, 1]
+        Q_22_U[eps + 1] = Q[22, 0]
+        Q_22_D[eps + 1] = Q[22, 1]
+        
+    plt.figure(figsize=(12, 6))
+    plt.bar(steps_episodes.keys(), steps_episodes.values())
+    plt.xlabel('Episode')
+    plt.ylabel('Steps')
+    plt.title('Sarsa steps per episode')
+    plt.savefig('fonts/sarsa_steps_eps.png')
+    
+    plt.figure(figsize=(12, 6))
+    plt.plot(rewards_episodes.keys(), rewards_episodes.values())
+    plt.xlabel('Episode')
+    plt.ylabel('Sum of rewards during episode')
+    plt.title('Sarsa rewards per episode')
+    plt.savefig('fonts/sarsa_rewards_eps.png')
+    
+    plt.figure(figsize=(12, 8))
+    plt.plot(Q_13_U.keys(), Q_13_U.values(), label='Q(13, UP_RIGHT)')
+    plt.plot(Q_13_D.keys(), Q_13_D.values(), label='Q(13, DOWN_RIGHT)')
+    plt.plot(Q_22_U.keys(), Q_22_U.values(), label='Q(22, UP_RIGHT)')
+    plt.plot(Q_22_D.keys(), Q_22_D.values(), label='Q(22, DOWN_RIGHT)')
+    plt.xlabel('Episode')
+    plt.ylabel('Q-value')
+    plt.title('Sarsa Q-value convergence')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.savefig('fonts/sarsa_q_convergence.png')
 
     # END YOUR CODE HERE
 
