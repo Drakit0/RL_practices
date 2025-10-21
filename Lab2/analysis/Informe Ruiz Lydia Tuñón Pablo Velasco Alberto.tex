@@ -289,7 +289,7 @@ En la figura 4 podemos ver que el número de episodios exitosos respecto al núm
     \begin{tabular}{lcc}
         Métrica & SARSA & Q-learning \\
         Velocidad de convergencia & 400 & 800 \\
-        Velocidad de convergencia (acción óptima "clara") & 200 & 100 \\
+        Velocidad de convergencia (acción óptima ``clara'') & 200 & 100 \\
         Exploración & Mejor & Peor \\
         Error final & 0.07 & 0.063 \\
     \end{tabular}
@@ -305,7 +305,15 @@ En la figura 4 podemos ver que el número de episodios exitosos respecto al núm
 %---------------------------
 \section{Conclusiones}
 
-Ambos algoritmos logran aproximar los valores óptimos de Q(s, a) dados suficientes episodios. Para estados donde la acción según el valor a largo plazo difiere de la acción según el valor a corto plazo Q-learning lo puede tener complicado. Esto es dado que Q-learning tarda más en refinar los valores de Q para las acciones que no son preferibles a primera vista. Mietras tanto SARSA tarda menos en converger en general. Esta comparativa muestra los problemas de Q-learning y las ventajas de doble Q-learning para protegerse frente a acciones aparentemente buenas que a largo plazo no lo son.
+En este laboratorio se ha analizado el comportamiento de los algoritmos SARSA y Q-learning, ambos pertenecientes a los métodos de aprendizaje por diferencia temporal (\textit{Temporal-Difference Learning}). Estos métodos combinan las ventajas del aprendizaje por Monte Carlo (MC) y de la Programación Dinámica (DP), ya que aprenden directamente de la experiencia sin disponer de un modelo del entorno, actualizando sus estimaciones de forma incremental a partir de recompensas observadas y de los valores estimados de los estados sucesores. 
+
+El algoritmo SARSA, de tipo \textit{on-policy}, aprende la función de acción-valor siguiendo la política de comportamiento $\varepsilon$-greedy, actualizando sus estimaciones con las transiciones realmente ejecutadas. Esto le permite adaptarse de forma más conservadora a la exploración, resultando en un aprendizaje más estable y robusto, aunque potencialmente más lento en alcanzar el valor óptimo. En nuestros resultados, SARSA muestra una convergencia rápida y suave, con un error muy bajo respecto a los valores obtenidos mediante \textit{Policy Iteration} (PI) y \textit{Value Iteration} (VI).
+
+Por otro lado, Q-learning es un algoritmo \textit{off-policy} que actualiza sus valores de acción-estado utilizando la ecuación de optimalidad de Bellman, de manera independiente de la política de comportamiento. Esto le permite aproximar directamente la función óptima $Q^*$, pero introduce un sesgo de maximización al usar el mismo estimador tanto para seleccionar como para evaluar la acción con mayor valor esperado. En los experimentos realizados, Q-learning alcanza los valores óptimos en menos pasos para las acciones con mayor recompensa inmediata, pero presenta una mayor variabilidad y sobrevaloración en las acciones subóptimas, especialmente durante las primeras fases del aprendizaje.
+
+Ambos algoritmos logran aproximar los valores óptimos de $Q(s, a)$ dados suficientes episodios. Sin embargo, para estados donde la acción óptima a largo plazo difiere de la acción aparentemente mejor a corto plazo, Q-learning puede tener dificultades. Esto se debe a que Q-learning tarda más en refinar los valores de $Q$ para las acciones que no son preferibles a primera vista, debido a su carácter \textit{off-policy} y a la tendencia a sobrevalorar las recompensas inmediatas. SARSA, en cambio, al aprender siguiendo su propia política de comportamiento, tarda menos en converger de forma global y genera políticas más seguras y coherentes.
+
+En definitiva, ambos algoritmos convergen hacia la política óptima $\pi^*$ cuando se cumplen las condiciones de exploración suficientes y una reducción progresiva del parámetro $\varepsilon$, pero difieren en su robustez y comportamiento transitorio durante el proceso de aprendizaje.
 
 
 \end{document}
