@@ -11,6 +11,9 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
     nA = env.action_space.n
     Q = np.zeros((nS, nA))
     
+    total_steps = 0
+    steps_list = []
+    episodes_list = []
     steps_episodes = {}
     rewards_episodes = {}
     Q_13_U = {}
@@ -49,6 +52,9 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
             
             rewards += r
             steps += 1
+            total_steps += 1
+            steps_list.append(total_steps)
+            episodes_list.append(eps if not t else eps + 1)
         
         if steps in steps_episodes.keys():
             steps_episodes[steps] += 1
@@ -87,6 +93,13 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.savefig('fonts/sarsa_q_convergence.png')
+    
+    plt.figure(figsize=(12, 8))
+    plt.plot(steps_list, episodes_list)
+    plt.xlabel('Steps')
+    plt.ylabel('Episodes')
+    plt.title('Sarsa episodes completed per steps')
+    plt.savefig('fonts/sarsa_steps_eps_2.png')
     
     # END YOUR CODE HERE
 
