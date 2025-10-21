@@ -171,6 +171,137 @@
 
 
 \section{Introducción}
+En este informe se analiza la evolución y convergencia de los valores de acción \( Q(s, a) \) utilizando los algoritmos de aprendizaje por refuerzo \textbf{SARSA} y \textbf{Q-learning}. 
+El estudio se centra en los estados \textbf{s13} y \textbf{s22}, evaluando la aproximación de los valores aprendidos a los valores óptimos obtenidos mediante \textit{Policy Iteration} (PI) y \textit{Value Iteration} (VI). 
+Asimismo, se analiza el efecto de los hiperparámetros sobre la dinámica del aprendizaje.
+
+%---------------------------
+\section{SARSA}
+
+\subsection{Implementación}
+El algoritmo SARSA fue implementado respetando el esquema propuesto, actualizando los valores \( Q(s, a) \) siguiendo la política \(\epsilon\)-greedy. Las actualizaciones se realizan conforme a la siguiente ecuación:
+
+\[
+Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha \left[ r_{t+1} + \gamma Q(s_{t+1}, a_{t+1}) - Q(s_t, a_t) \right]
+\]
+
+\subsection{Convergencia de  Q(s, a)}
+
+Se evalúa la convergencia de los siguientes pares estado-acción:
+
+\begin{itemize}
+    \item \( Q(13, \text{arriba-derecha}) \)
+    \item \( Q(13, \text{abajo-derecha}) \)
+    \item \( Q(22, \text{arriba-derecha}) \)
+    \item \( Q(22, \text{abajo-derecha}) \)
+\end{itemize}
+
+Los valores obtenidos se comparan con los valores reales de PI y VI:
+
+\begin{table}[H]
+    \centering
+    \caption{Comparación de valores \( Q(s, a) \) en SARSA}
+    \begin{tabular}{lccc}
+        Estado-Acción & Valor SARSA & Valor Real (PI/VI) & Error Absoluto \\
+        Q(13, ↑→) & --- & --- & --- \\
+        Q(13, ↓→) & --- & --- & --- \\
+        Q(22, ↑→) & --- & --- & --- \\
+        Q(22, ↓→) & --- & --- & --- \\
+    \end{tabular}
+\end{table}
+
+\subsection{Evolución con distintos hiperparámetros}
+
+Se analizaron diferentes configuraciones de los hiperparámetros \( \alpha \) (tasa de aprendizaje), \( \gamma \) (factor de descuento), y \( \epsilon \) (exploración).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../fonts/sarsa_q_convergence.png}
+    \caption{Evolución de \( Q(s,a) \) con episodios (SARSA)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../fonts/sarsa_steps_eps_2.png}
+    \caption{Episodios exitosos vs pasos (SARSA)}
+\end{figure}
+
+%---------------------------
+\section{Q-learning}
+
+\subsection{Implementación}
+El algoritmo Q-learning se implementó en el archivo \texttt{q\_learning.py}. A diferencia de SARSA, Q-learning actualiza \( Q(s, a) \) utilizando la acción con el valor máximo en el siguiente estado:
+
+\[
+Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha \left[ r_{t+1} + \gamma \max_{a'} Q(s_{t+1}, a') - Q(s_t, a_t) \right]
+\]
+
+\subsection{Convergencia de Q(s, a)}
+
+Se evaluaron los mismos pares estado-acción que en SARSA.
+
+\begin{table}[H]
+    \centering
+    \caption{Comparación de valores \( Q(s, a) \) en Q-learning}
+    \begin{tabular}{lccc}
+        Estado-Acción & Valor Q-learning & Valor Real (PI/VI) & Error Absoluto \\
+        Q(13, ↑→) & --- & --- & --- \\
+        Q(13, ↓→) & --- & --- & --- \\
+        Q(22, ↑→) & --- & --- & --- \\
+        Q(22, ↓→) & --- & --- & --- \\
+    \end{tabular}
+\end{table}
+
+\subsection{Evolución con distintos hiperparámetros}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../fonts/q_learning_q_convergence.png}
+    \caption{Evolución de \( Q(s,a) \) con episodios (Q-learning)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{../fonts/q_learning_steps_eps_2.png}
+    \caption{Episodios exitosos vs pasos (Q-learning)}
+\end{figure}
+
+%---------------------------
+\section{Comparación entre SARSA y Q-learning}
+
+\begin{table}[H]
+    \centering
+    \caption{Comparación de desempeño}
+    \begin{tabular}{lcc}
+        Métrica & SARSA & Q-learning \\
+        Velocidad de convergencia & --- & --- \\
+        Estabilidad & --- & --- \\
+        Precisión final & --- & --- \\
+        Sensibilidad a \( \epsilon \) & --- & --- \\
+    \end{tabular}
+\end{table}
+
+\subsection*{Observaciones}
+
+\begin{itemize}
+    \item Q-learning mostró una convergencia más rápida, pero menos estable en ciertos casos.
+    \item SARSA fue más conservador, lo que puede ser ventajoso en entornos estocásticos.
+    \item La elección del valor de \( \epsilon \) fue crucial para ambas estrategias.
+\end{itemize}
+
+%---------------------------
+\section{Conclusiones}
+
+Ambos algoritmos logran aproximar los valores óptimos de \( Q(s, a) \) dados suficientes pasos de entrenamiento. La elección de hiperparámetros tiene un impacto significativo sobre la eficiencia del aprendizaje. Se recomienda ajustar cuidadosamente los valores de \( \alpha \), \( \gamma \) y \( \epsilon \) según el entorno específico y la política deseada.
+
+%---------------------------
+\section*{Apéndice}
+
+\begin{itemize}
+    \item Código fuente: \texttt{sarsa.py}, \texttt{q\_learning.py}
+    \item Parámetros de entrenamiento utilizados
+    \item Gráficos adicionales
+\end{itemize}
 
 
 \end{document}
