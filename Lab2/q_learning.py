@@ -25,17 +25,17 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon, render=False):
         s, _ = env.reset()
         
         steps = 0
-        rewards = 0
-        
-        if np.random.random() < epsilon:
-            a = np.random.choice(nA)
-        
-        else:
-            a = np.argmax(Q[s, :])     
+        rewards = 0  
             
         t = False
         
         while not t:
+            
+            if np.random.random() < epsilon:
+                a = np.random.choice(nA)
+            
+            else:
+                a = np.argmax(Q[s, :])  
             s_p, r, t, _, _ = env.step(a)
             
             max_q_next = np.max(Q[s_p, :])
