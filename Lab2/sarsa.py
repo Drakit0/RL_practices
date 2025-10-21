@@ -101,6 +101,11 @@ def sarsa(env, num_episodes, alpha, gamma, epsilon):
     plt.title('Sarsa episodes completed per steps')
     plt.savefig('fonts/sarsa_steps_eps_2.png')
     
+    print(f"{Q[13, 0] = }")
+    print(f"{Q[13, 1] = }")
+    print(f"{Q[22, 0] = }")
+    print(f"{Q[22, 1] = }")
+    
     # END YOUR CODE HERE
 
     return Q
