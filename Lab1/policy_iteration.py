@@ -139,10 +139,10 @@ def policy_iteration(P, nS, nA, gamma=0.9, tol=1e-3, deterministic=True):
         plt.title(f"Iter. {iteration}")
         plt.grid(True)
     
-    plt.suptitle(f"V_s update in policy iteration ({"deterministic" if deterministic else "stochastic"})", fontsize=16)
+    plt.suptitle(f"V_s update in policy iteration ({'deterministic' if deterministic else 'stochastic'})", fontsize=16)
     plt.tight_layout()
     plt.subplots_adjust(top=0.93)
-    plt.savefig(f"fonts/v_s_policy_{"deterministic" if deterministic else "stochastic"}.png")
+    plt.savefig(f"fonts/v_s_policy_{'deterministic' if deterministic else 'stochastic'}.png")
     plt.close()
     
     
@@ -190,9 +190,9 @@ def policy_iteration(P, nS, nA, gamma=0.9, tol=1e-3, deterministic=True):
     plt.plot(iterations, gap_values, 'o-', color='red', linewidth=2, markersize=6)
     plt.xlabel("Iteration")
     plt.ylabel("Policy Suboptimality Gap")
-    plt.title(f"Policy Suboptimality Gap ({"deterministic" if deterministic else "stochastic"})")
+    plt.title(f"Policy Suboptimality Gap ({'deterministic' if deterministic else 'stochastic'})")
     plt.grid(True)
-    plt.savefig(f"fonts/policy_gap_{"deterministic" if deterministic else "stochastic"}.png")
+    plt.savefig(f"fonts/policy_gap_{'deterministic' if deterministic else 'stochastic'}.png")
     plt.close()
 
     ### END CODE HERE ###

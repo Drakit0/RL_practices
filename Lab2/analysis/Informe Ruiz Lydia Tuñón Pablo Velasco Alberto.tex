@@ -196,41 +196,48 @@ Se evalúa la convergencia de los siguientes pares estado-acción:
     \item \( Q(22, \text{abajo-derecha}) \)
 \end{itemize}
 
-Los valores obtenidos se comparan con los valores reales de PI y VI:
+Los valores obtenidos se comparan con los valores reales de Policy Iteration (PI) y Valure Iteration (VI):
 
 \begin{table}[H]
     \centering
     \caption{Comparación de valores \( Q(s, a) \) en SARSA}
     \begin{tabular}{lccc}
         Estado-Acción & Valor SARSA & Valor Real (PI/VI) & Error Absoluto \\
-        Q(13, ↑→) & --- & --- & --- \\
-        Q(13, ↓→) & --- & --- & --- \\
-        Q(22, ↑→) & --- & --- & --- \\
-        Q(22, ↓→) & --- & --- & --- \\
+        Q(13, ↑→) & 2.14 & 2.15 & 0.01 \\
+        Q(13, ↓→) & 5.00 & 5.00 & 0.00 \\
+        Q(22, ↑→) & 2.15 & 2.15 & 0.00 \\
+        Q(22, ↓→) & -5.44 & -5.50 & 0.06 \\
     \end{tabular}
 \end{table}
+Se puede ver que el error acaba siendo ínfimo en los 4 pares, habiendo sólo dos pares que no consiguen un error de 0.
+En concreto, estos pares son los de la acción menos desable para cada estado, debido a que la política $\epsilon$-greedy de comportamiento de Sarsa fomenta investigar más las opciones de máximo valor.
 
-\subsection{Evolución con distintos hiperparámetros}
-
-Se analizaron diferentes configuraciones de los hiperparámetros \( \alpha \) (tasa de aprendizaje), \( \gamma \) (factor de descuento), y \( \epsilon \) (exploración).
+\subsection{Evolución de valores de Q}
+En la figura 1 se puede observar que a partir del episodio 400 no aparecen apenas cambios en los valores de Q. Alcanzando ese error tan bajo alrededor a ese número de episodios. 
+Además, llama la atención la variabilidad del par (22, ↑→) cuyo valor de Q cae por momentos.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{../fonts/sarsa_q_convergence.png}
+    \includegraphics[width=0.7\textwidth]{../fonts/sarsa_q_convergence.png}
     \caption{Evolución de \( Q(s,a) \) con episodios (SARSA)}
 \end{figure}
 
+\subsection{Pasos medios por episodio}
+En la figura 2 se puede ver que el número de episodios respecto al número de pasos forma prácticamente una recta. Aunque la pendiente va aumentando ligeramente, indicando que los episodios van durando menos pasos según se van completando. De hecho, la curva deja aumentar en pendiente a partir del episodio 400, debido a la covergencia de los valores de Q.
+Podemos obtener el número de pasos medio que tarda en finalizar un episodio con el número total de pasos entre el número de episodios, lo cual es aproximadamente 3000/1000 = 3.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\textwidth]{../fonts/sarsa_steps_eps_2.png}
+    \includegraphics[width=0.5\textwidth]{../fonts/sarsa_steps_eps_2.png}
     \caption{Episodios exitosos vs pasos (SARSA)}
 \end{figure}
 
 %---------------------------
+\clearpage
 \section{Q-learning}
 
 \subsection{Implementación}
-El algoritmo Q-learning se implementó en el archivo \texttt{q\_learning.py}. A diferencia de SARSA, Q-learning actualiza \( Q(s, a) \) utilizando la acción con el valor máximo en el siguiente estado:
+El algoritmo Q-learning se implementó en el archivo \texttt{q\_learning.py}. 
+A diferencia de SARSA, Q-learning actualiza \( Q(s, a) \) utilizando la acción con el valor máximo en el siguiente estado:
 
 \[
 Q(s_t, a_t) \leftarrow Q(s_t, a_t) + \alpha \left[ r_{t+1} + \gamma \max_{a'} Q(s_{t+1}, a') - Q(s_t, a_t) \right]
@@ -245,20 +252,26 @@ Se evaluaron los mismos pares estado-acción que en SARSA.
     \caption{Comparación de valores \( Q(s, a) \) en Q-learning}
     \begin{tabular}{lccc}
         Estado-Acción & Valor Q-learning & Valor Real (PI/VI) & Error Absoluto \\
-        Q(13, ↑→) & --- & --- & --- \\
-        Q(13, ↓→) & --- & --- & --- \\
-        Q(22, ↑→) & --- & --- & --- \\
-        Q(22, ↓→) & --- & --- & --- \\
+        Q(13, ↑→) & 1.52 & 2.15 & 0.63 \\
+        Q(13, ↓→) & 5.00 & 5.00 & 0.00 \\
+        Q(22, ↑→) & 2.15 & 2.15 & 0.00 \\
+        Q(22, ↓→) & -5.50 & -5.50 & 0.00 \\
     \end{tabular}
 \end{table}
-
-\subsection{Evolución con distintos hiperparámetros}
+Se obtiene un error de 0 en 3 de los pares. Sin embargo, el par (13, ↑→) obtiene un error de 0.63, mucho mayor a cualquiera obtenido con SARSA. 
+Al igual que en SARSA, sólo se obtiene error en el caso de la acción menos deseable.
+\subsection{Evolución de valores de Q}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.75\textwidth]{../fonts/q_learning_q_convergence.png}
     \caption{Evolución de \( Q(s,a) \) con episodios (Q-learning)}
 \end{figure}
+En la figura 3 se puede observar que Q-learning es más estable que SARSA. Además, los valores de Q para las acciones más deseables convergen muy rápidamente al valor real. 
+Por otro lado, el valor de Q para las acciones menos deseables tarda bastante en converger (800 episodios). 
+
+\subsection{Pasos medios por episodio}
+En la figura 4 podemos ver que el número de episodios exitosos respecto al número de pasos forma una recta de pendiente 4300/1000 = 4.3. Con Q-learning los episodios duran bastante más que con SARSA. Al tomar la acción con mayor Q se evita explorar opciones que a priori parecen peores, pero que pueden resultar mejores. Un ejemplo de esto es preferir acabar el episodio cuanto antes, porque intentar llegar al estado 19 acaba incurriendo en una mayor pérdida, algo que Q-learning tiende a no ver.
 
 \begin{figure}[H]
     \centering
@@ -267,6 +280,7 @@ Se evaluaron los mismos pares estado-acción que en SARSA.
 \end{figure}
 
 %---------------------------
+\clearpage
 \section{Comparación entre SARSA y Q-learning}
 
 \begin{table}[H]
@@ -274,34 +288,24 @@ Se evaluaron los mismos pares estado-acción que en SARSA.
     \caption{Comparación de desempeño}
     \begin{tabular}{lcc}
         Métrica & SARSA & Q-learning \\
-        Velocidad de convergencia & --- & --- \\
-        Estabilidad & --- & --- \\
-        Precisión final & --- & --- \\
-        Sensibilidad a \( \epsilon \) & --- & --- \\
+        Velocidad de convergencia & 400 & 800 \\
+        Velocidad de convergencia (acción óptima "clara") & 200 & 100 \\
+        Exploración & Mejor & Peor \\
+        Error final & 0.07 & 0.063 \\
     \end{tabular}
 \end{table}
 
 \subsection*{Observaciones}
 
 \begin{itemize}
-    \item Q-learning mostró una convergencia más rápida, pero menos estable en ciertos casos.
-    \item SARSA fue más conservador, lo que puede ser ventajoso en entornos estocásticos.
-    \item La elección del valor de \( \epsilon \) fue crucial para ambas estrategias.
+    \item SARSA mostró una convergencia más rápida para el global de los valores.
+    \item Q-learning obtuvo una convergencia más rápida para los valores de Q de la acción óptima de estados donde se debe intentar maximizar el valor a corto plazo.
 \end{itemize}
 
 %---------------------------
 \section{Conclusiones}
 
-Ambos algoritmos logran aproximar los valores óptimos de \( Q(s, a) \) dados suficientes pasos de entrenamiento. La elección de hiperparámetros tiene un impacto significativo sobre la eficiencia del aprendizaje. Se recomienda ajustar cuidadosamente los valores de \( \alpha \), \( \gamma \) y \( \epsilon \) según el entorno específico y la política deseada.
-
-%---------------------------
-\section*{Apéndice}
-
-\begin{itemize}
-    \item Código fuente: \texttt{sarsa.py}, \texttt{q\_learning.py}
-    \item Parámetros de entrenamiento utilizados
-    \item Gráficos adicionales
-\end{itemize}
+Ambos algoritmos logran aproximar los valores óptimos de Q(s, a) dados suficientes episodios. Para estados donde la acción según el valor a largo plazo difiere de la acción según el valor a corto plazo Q-learning lo puede tener complicado. Esto es dado que Q-learning tarda más en refinar los valores de Q para las acciones que no son preferibles a primera vista. Mietras tanto SARSA tarda menos en converger en general. Esta comparativa muestra los problemas de Q-learning y las ventajas de doble Q-learning para protegerse frente a acciones aparentemente buenas que a largo plazo no lo son.
 
 
 \end{document}

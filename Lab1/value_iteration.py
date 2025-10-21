@@ -64,9 +64,9 @@ def value_iteration(P, nS, nA, gamma=0.9, tol=1e-3, deterministic = True):
     plt.plot(diffs)
     plt.xlabel("States")
     plt.ylabel("Max Difference")
-    plt.title(f"V_s update in value iteration ({"deterministic" if deterministic else "stochastic"})")
+    plt.title(f"V_s update in value iteration ({'deterministic' if deterministic else 'stochastic'})")
     plt.grid(True)
-    plt.savefig(f"fonts/v_s_value_{"deterministic" if deterministic else "stochastic"}.png")
+    plt.savefig(f"fonts/v_s_value_{'deterministic' if deterministic else 'stochastic'}.png")
     plt.close()
     
     

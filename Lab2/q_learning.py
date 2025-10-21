@@ -83,14 +83,14 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon, render=False):
     plt.savefig('fonts/q_learning_rewards_eps.png')
     
     plt.figure(figsize=(12, 8))
-    plt.plot(Q_13_U.keys(), Q_13_U.values(), label='Q(13, UP_RIGHT)')
-    plt.plot(Q_13_D.keys(), Q_13_D.values(), label='Q(13, DOWN_RIGHT)')
-    plt.plot(Q_22_U.keys(), Q_22_U.values(), label='Q(22, UP_RIGHT)')
-    plt.plot(Q_22_D.keys(), Q_22_D.values(), label='Q(22, DOWN_RIGHT)')
+    plt.plot(Q_13_U.keys(), Q_13_U.values(), label=f'Q(13, UP_RIGHT) {Q[13, 0]:.2f}')
+    plt.plot(Q_13_D.keys(), Q_13_D.values(), label=f'Q(13, DOWN_RIGHT) {Q[13, 1]:.2f}')
+    plt.plot(Q_22_U.keys(), Q_22_U.values(), label=f'Q(22, UP_RIGHT) {Q[22, 0]:.2f}')
+    plt.plot(Q_22_D.keys(), Q_22_D.values(), label=f'Q(22, DOWN_RIGHT) {Q[22, 1]:.2f}')
     plt.xlabel('Episode')
     plt.ylabel('Q-value')
     plt.title('Q-learning Q-value convergence')
-    plt.legend()
+    plt.legend(loc='lower left')
     plt.grid(True, alpha=0.3)
     plt.savefig('fonts/q_learning_q_convergence.png')
 
@@ -100,11 +100,6 @@ def q_learning(env, num_episodes, alpha, gamma, epsilon, render=False):
     plt.ylabel('Episodes')
     plt.title('Q-learning episodes completed per steps')
     plt.savefig('fonts/q_learning_steps_eps_2.png')
-
-    print(f"{Q[13, 0] = }")
-    print(f"{Q[13, 1] = }")
-    print(f"{Q[22, 0] = }")
-    print(f"{Q[22, 1] = }")
 
     # END YOUR CODE HERE
 
@@ -119,7 +114,7 @@ gym.envs.registration.register(
 env = gym.make("JumpToTheGoalEnv-v0", render_mode="human", deterministic=True)
 
 # Hyperparameters
-num_episodes = 100
+num_episodes = 1000
 alpha = 0.9
 gamma = 0.9
 epsilon = 0.05
