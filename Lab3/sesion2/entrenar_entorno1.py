@@ -55,7 +55,7 @@ print("\n" + "=" * 70)
 print("INICIANDO ENTRENAMIENTO (con early stopping)")
 print("=" * 70)
 
-# Entrenar con early stopping cuando alcance 95% de éxito
+# Entrenar con early stopping cuando alcance el objetivo de éxito
 num_episodes = 5000  # Máximo, pero para antes si alcanza objetivo
 agent.train(env, num_episodes=num_episodes, verbose=True,
             early_stopping=True, target_success_rate=0.96, patience=600)
