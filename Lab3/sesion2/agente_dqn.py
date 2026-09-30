@@ -274,7 +274,7 @@ class DQNAgent:
                     episodes_without_improvement = 0
                     self._save_best_weights()
                     if verbose:
-                        print(f"  ✓ Nuevo mejor modelo guardado (reward: {avg_reward:.2f})")
+                        print(f"  [ok] Nuevo mejor modelo guardado (reward: {avg_reward:.2f})")
                 else:
                     episodes_without_improvement += 100
             
@@ -290,7 +290,7 @@ class DQNAgent:
                 # Verificar si alcanzamos objetivo
                 if target_success_rate and success_rate >= target_success_rate:
                     if verbose:
-                        print(f"\n✓ EARLY STOPPING: Objetivo alcanzado ({success_rate*100:.1f}% >= {target_success_rate*100:.1f}%)")
+                        print(f"\n[ok] EARLY STOPPING: Objetivo alcanzado ({success_rate*100:.1f}% >= {target_success_rate*100:.1f}%)")
                     break
                 
                 # Verificar estabilización
@@ -300,7 +300,7 @@ class DQNAgent:
                 
                 if episodes_without_improvement >= patience:
                     if verbose:
-                        print(f"\n✓ EARLY STOPPING: Estabilizado ({patience} eps sin mejora)")
+                        print(f"\n[ok] EARLY STOPPING: Estabilizado ({patience} eps sin mejora)")
                     break
     
     def _quick_evaluate(self, env, num_episodes=100):
@@ -464,7 +464,7 @@ class DQNAgent:
         if hasattr(self, '_best_weights'):
             self.policy_net.load_state_dict(self._best_weights['policy_net'])
             self.target_net.load_state_dict(self._best_weights['target_net'])
-            print("✓ Cargados los mejores pesos del entrenamiento")
+            print("[ok] Cargados los mejores pesos del entrenamiento")
     
     def save(self, filepath, use_best=False):
         """
@@ -472,7 +472,7 @@ class DQNAgent:
         """
         if use_best and hasattr(self, '_best_weights'):
             self._load_best_weights()
-            print("✓ Usando los mejores pesos del entrenamiento")
+            print("[ok] Usando los mejores pesos del entrenamiento")
         
         torch.save({
             'policy_net_state_dict': self.policy_net.state_dict(),

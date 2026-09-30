@@ -16,7 +16,7 @@ print("=" * 70)
 
 # Crear entorno
 env = WarehouseEnv(just_pick=False, random_objects=True, render_mode=None)
-print(f"✓ Entorno creado")
+print(f"[ok] Entorno creado")
 print(f"  - Tarea: Recoger un objeto Y entregarlo")
 print(f"  - Objetos: ALEATORIOS (cambian cada episodio)")
 print(f"  - Acciones: {env.action_space.n} (4 movimiento + 1 coger + 1 soltar)")
@@ -26,7 +26,7 @@ print(f"  - Desafío: El agente debe GENERALIZAR")
 feedback = WarehouseFeedback()
 state_size = feedback.get_feature_size()
 action_size = env.action_space.n
-print(f"✓ Representación: {state_size} features (con proximidad a obstáculos)")
+print(f"[ok] Representación: {state_size} features (con proximidad a obstáculos)")
 
 # Crear agente DQN (configuración robusta para generalización)
 agent = DQNAgent(
@@ -43,7 +43,7 @@ agent = DQNAgent(
     target_update_freq=10,
     hidden_sizes=[128, 64]     # Misma arquitectura que entornos 1 y 2
 )
-print(f"✓ Agente DQN creado")
+print(f"[ok] Agente DQN creado")
 print(f"  - Learning rate: 0.0003")
 print(f"  - Gamma: 0.99")
 print(f"  - Epsilon: 0.3 → 0.05 (decay: 0.998)")
@@ -52,7 +52,7 @@ print(f"  - Batch size: 64")
 print(f"  - Arquitectura: [128, 64]")
 
 # Transfer Learning desde Entorno 2
-print("\n🔄 TRANSFER LEARNING:")
+print("\nTRANSFER LEARNING:")
 try:
     # Cargar pesos del Entorno 2 (mismo número de acciones: 6)
     checkpoint = torch.load('entorno2_agente.pth', map_location=agent.device, weights_only=False)
@@ -60,14 +60,14 @@ try:
     if isinstance(checkpoint, dict) and 'policy_net_state_dict' in checkpoint:
         agent.policy_net.load_state_dict(checkpoint['policy_net_state_dict'])
         agent.target_net.load_state_dict(checkpoint['target_net_state_dict'])
-        print("✓ Pesos cargados desde entorno2_agente.pth (formato checkpoint)")
+        print("[ok] Pesos cargados desde entorno2_agente.pth (formato checkpoint)")
     else:
         agent.policy_net.load_state_dict(checkpoint)
         agent.target_net.load_state_dict(checkpoint)
-        print("✓ Pesos cargados desde entorno2_agente.pth (formato directo)")
+        print("[ok] Pesos cargados desde entorno2_agente.pth (formato directo)")
     print("  - Misma arquitectura y acciones - transferencia completa")
 except Exception as e:
-    print(f"⚠ No se pudo cargar entorno2_agente.pth: {e}")
+    print(f"[warn] No se pudo cargar entorno2_agente.pth: {e}")
     print("  - Entrenando desde cero")
 
 print("\n" + "=" * 70)
@@ -121,7 +121,7 @@ if agent.losses:
 
 plt.tight_layout()
 plt.savefig('entorno3_training_progress.png', dpi=150, bbox_inches='tight')
-print(f"\n✓ Gráficas guardadas en: entorno3_training_progress.png")
+print(f"\n[ok] Gráficas guardadas en: entorno3_training_progress.png")
 
 print("\n" + "=" * 70)
 print("RESUMEN ENTORNO 3")

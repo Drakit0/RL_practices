@@ -16,7 +16,7 @@ print("=" * 70)
 
 # Crear entorno
 env = WarehouseEnv(just_pick=False, random_objects=False, render_mode=None)
-print(f"✓ Entorno creado")
+print(f"[ok] Entorno creado")
 print(f"  - Tarea: Recoger un objeto Y entregarlo")
 print(f"  - Objetos: Fijos en posiciones predefinidas")
 print(f"  - Acciones: {env.action_space.n} (4 movimiento + 1 coger + 1 soltar)")
@@ -25,7 +25,7 @@ print(f"  - Acciones: {env.action_space.n} (4 movimiento + 1 coger + 1 soltar)")
 feedback = WarehouseFeedback()
 state_size = feedback.get_feature_size()
 action_size = env.action_space.n
-print(f"✓ Representación RICA: {state_size} features")
+print(f"[ok] Representación RICA: {state_size} features")
 
 # Crear agente DQN (misma arquitectura que entorno 1 pero con 6 acciones)
 agent = DQNAgent(
@@ -55,23 +55,23 @@ try:
     for name, param in pretrained_state.items():
         if name in current_state and param.shape == current_state[name].shape:
             current_state[name] = param
-            print(f"  ✓ Cargada capa: {name}")
+            print(f"  [ok] Cargada capa: {name}")
         elif name in current_state:
             # La última capa tiene diferente tamaño (5 vs 6 acciones)
             if 'weight' in name and param.shape[0] == 5:
                 current_state[name][:5, :] = param
-                print(f"  ✓ Cargada parcialmente: {name} (5 de 6 acciones)")
+                print(f"  [ok] Cargada parcialmente: {name} (5 de 6 acciones)")
             elif 'bias' in name and param.shape[0] == 5:
                 current_state[name][:5] = param
-                print(f"  ✓ Cargada parcialmente: {name} (5 de 6 acciones)")
+                print(f"  [ok] Cargada parcialmente: {name} (5 de 6 acciones)")
     
     agent.policy_net.load_state_dict(current_state)
     agent.target_net.load_state_dict(current_state)
-    print("✓ Transfer learning completado desde entorno1_agente.pth")
+    print("[ok] Transfer learning completado desde entorno1_agente.pth")
 except FileNotFoundError:
-    print("⚠ No se encontró entorno1_agente.pth - entrenando desde cero")
+    print("[warn] No se encontró entorno1_agente.pth - entrenando desde cero")
 
-print(f"\n✓ Agente DQN (Double DQN + Transfer Learning + Prioritized Replay) creado")
+print(f"\n[ok] Agente DQN (Double DQN + Transfer Learning + Prioritized Replay) creado")
 print(f"  - Learning rate: 0.0005")
 print(f"  - Gamma: 0.99")
 print(f"  - Epsilon: 0.3 → 0.01 (decay: 0.998)")
@@ -128,7 +128,7 @@ if agent.losses:
 
 plt.tight_layout()
 plt.savefig('entorno2_training_progress.png', dpi=150, bbox_inches='tight')
-print(f"\n✓ Gráficas guardadas en: entorno2_training_progress.png")
+print(f"\n[ok] Gráficas guardadas en: entorno2_training_progress.png")
 
 print("\n" + "=" * 70)
 print("RESUMEN ENTORNO 2")

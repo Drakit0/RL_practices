@@ -42,11 +42,11 @@ for ep in range(num_eps):
         done = term or trunc
         if done:
             if env.delivery or (just_pick and env.agent_has_object):
-                print(f"✅ Éxito en {steps} pasos")
+                print(f"[ok] Éxito en {steps} pasos")
             elif env.collision:
-                print(f"❌ Colisión en {steps} pasos")
+                print(f"[fail] Colisión en {steps} pasos")
             else:
-                print(f"⏱️ Timeout en {steps} pasos")
+                print(f"Timeout en {steps} pasos")
     if not done:
-        print(f"⏱️ Timeout en {steps} pasos")
+        print(f"Timeout en {steps} pasos")
 env.close()

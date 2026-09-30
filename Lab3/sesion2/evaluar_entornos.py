@@ -31,7 +31,7 @@ def evaluate_agent(agent_path, env, env_name, num_episodes=500, num_rounds=3):
     try:
         agent.load(agent_path)
     except FileNotFoundError:
-        print(f"❌ Error: No se encontró {agent_path}")
+        print(f"[fail] Error: No se encontró {agent_path}")
         print(f"   Por favor, entrena primero el agente correspondiente.")
         return None
     
@@ -161,7 +161,7 @@ def compare_agents():
         
         plt.tight_layout()
         plt.savefig('comparacion_agentes_sesion2.png', dpi=150, bbox_inches='tight')
-        print("\n✓ Gráfica comparativa guardada en: comparacion_agentes_sesion2.png")
+        print("\n[ok] Gráfica comparativa guardada en: comparacion_agentes_sesion2.png")
         
         # Tabla en consola
         print("\n" + "=" * 70)
@@ -174,7 +174,7 @@ def compare_agents():
                   f"{r['result']['avg_reward']:>6.1f} ± {r['result']['std_reward']:.1f}")
         print("=" * 70)
     
-    print("\n✓ Evaluación completada")
+    print("\n[ok] Evaluación completada")
 
 
 def visualize_agent(agent_path, env, env_name, num_episodes=3):
@@ -200,7 +200,7 @@ def visualize_agent(agent_path, env, env_name, num_episodes=3):
     try:
         agent.load(agent_path)
     except FileNotFoundError:
-        print(f"❌ Error: No se encontró {agent_path}")
+        print(f"[fail] Error: No se encontró {agent_path}")
         return
     
     # Crear entorno con render
@@ -230,9 +230,9 @@ def visualize_agent(agent_path, env, env_name, num_episodes=3):
         
         print(f"  Recompensa: {total_reward:.1f}, Pasos: {steps}")
         if env_render.delivery:
-            print("  ✓ Entrega exitosa")
+            print("  [ok] Entrega exitosa")
         elif env_render.collision:
-            print("  ✗ Colisión")
+            print("  [fail] Colisión")
     
     env_render.close()
 

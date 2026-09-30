@@ -16,11 +16,11 @@ The report gives, for the four state-action pairs it tracks, absolute errors of 
 
 ## Lab 3: Navigation and warehouse agents
 
-Folder `Lab3`, two sessions, each with its own README.
+Folder `Lab3`, two sessions, each with a short README.
 
-`sesion1`: a SARSA(0) agent with tile coding (`tiles3.py`, `representacion.py`, `agente.py`) for a continuous 2D navigation environment with obstacles and a target area. Two agents are trained with `entrenar_agente_a.py` (10,000 episodes) and `entrenar_agente_b.py` (50,000 episodes). The saved agents are the `.pkl` files. `evaluar_agentes.py` evaluates them and `visualizar_agente.py` renders an episode. The README gives approximate success rates of 85-90% for agent A and 90-95% for agent B over 1000 evaluation episodes.
+`sesion1`: a SARSA(0) agent with tile coding (`tiles3.py`, `representacion.py`, `agente.py`) for a continuous 2D navigation environment with obstacles and a target area. Two agents are trained with `entrenar_agente_a.py` (10,000 episodes) and `entrenar_agente_b.py` (50,000 episodes). The saved agents are the `.pkl` files. `evaluar_agentes.py` evaluates them and `visualizar_agente.py` renders an episode.
 
-`sesion2`: a DQN agent (`agente_dqn.py`) with experience replay, a target network and Double DQN, for a warehouse environment with three variants: pick objects at fixed positions, pick and deliver at fixed positions, and pick and deliver with random positions. `representacion_almacen.py` builds the state features, `entrenar_entorno1.py` to `entrenar_entorno3.py` train one agent per variant (each starting from the previous one), and `evaluar_entornos.py` evaluates them over 3 rounds of 500 episodes. Trained weights are the `.pth` files and the training curves are the `.png` files. The README reports success rates of 96.40% (environment 1), 90.60% (environment 2) and 90.67% (environment 3).
+`sesion2`: a DQN agent (`agente_dqn.py`) with experience replay, a target network and Double DQN, for a warehouse environment with three variants: pick objects at fixed positions, pick and deliver at fixed positions, and pick and deliver with random positions. `representacion_almacen.py` builds the state features, `entrenar_entorno1.py` to `entrenar_entorno3.py` train one agent per variant (each starting from the previous one), and `evaluar_entornos.py` evaluates them. Trained weights are the `.pth` files and the training curves are the `.png` files.
 
 ## Running
 

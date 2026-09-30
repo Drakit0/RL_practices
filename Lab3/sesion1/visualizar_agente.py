@@ -28,7 +28,7 @@ for ep in range(num_eps):
         env.render()
         steps += 1
         if term or trunc:
-            resultado = "✅ Éxito" if env.target else "❌ Colisión"
+            resultado = "[ok] Éxito" if env.target else "[fail] Colisión"
             print(f"{resultado} en {steps} pasos")
             break
 env.close()

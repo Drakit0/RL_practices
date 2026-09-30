@@ -14,7 +14,7 @@ print("=" * 70)
 
 # Crear entorno
 env = WarehouseEnv(just_pick=True, random_objects=False, render_mode=None)
-print(f"✓ Entorno creado")
+print(f"[ok] Entorno creado")
 print(f"  - Tarea: Recoger un objeto")
 print(f"  - Objetos: Fijos en posiciones predefinidas")
 print(f"  - Acciones: {env.action_space.n} (4 movimiento + 1 coger)")
@@ -23,7 +23,7 @@ print(f"  - Acciones: {env.action_space.n} (4 movimiento + 1 coger)")
 feedback = WarehouseFeedback()
 state_size = feedback.get_feature_size()
 action_size = env.action_space.n
-print(f"✓ Representación RICA: {state_size} features")
+print(f"[ok] Representación RICA: {state_size} features")
 print(f"  - Incluye: posición, distancias, direcciones a objetos")
 
 # Crear agente DQN con arquitectura optimizada
@@ -41,7 +41,7 @@ agent = DQNAgent(
     target_update_freq=10,
     hidden_sizes=[128, 64]      # Red más grande para más features
 )
-print(f"✓ Agente DQN (Double DQN) creado")
+print(f"[ok] Agente DQN (Double DQN) creado")
 print(f"  - Learning rate: 0.001")
 print(f"  - Gamma: 0.99")
 print(f"  - Epsilon: 1.0 → 0.01 (decay: 0.995)")
@@ -100,7 +100,7 @@ if agent.losses:
 
 plt.tight_layout()
 plt.savefig('entorno1_training_progress.png', dpi=150, bbox_inches='tight')
-print(f"\n✓ Gráficas guardadas en: entorno1_training_progress.png")
+print(f"\n[ok] Gráficas guardadas en: entorno1_training_progress.png")
 
 print("\n" + "=" * 70)
 print("RESUMEN ENTORNO 1")

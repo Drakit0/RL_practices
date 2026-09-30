@@ -264,4 +264,4 @@ if __name__ == "__main__":
     print(f"\nFeatures procesadas (simples): {len(features_simple)} dimensiones")
     print(features_simple)
     
-    print("\n✅ Representación funcionando correctamente")
+    print("\n[ok] Representación funcionando correctamente")
